@@ -5,7 +5,7 @@ test("Успешная авторизация", async ({ page }) => {
   const { email, password } = registrationData;
 
   await page.goto("https://netology.ru/?modal=sign_in");
-  await page.waitForLoadState("networkidle");
+ 
   const emailInput = page.locator('[name="email"]');
   await emailInput.fill(email);
   const passwordInput = page.locator('[name="password"]');
@@ -13,9 +13,10 @@ test("Успешная авторизация", async ({ page }) => {
   const submitInput = page.locator('[data-testid="login-submit-btn"]');
   await submitInput.click();
 
-  await expect(page.locator("text=Мои курсы и профессии")).toBeVisible({
-    timeout: 30000,
-  });
+  await expect(page.locator("text=Мои курсы и профессии")).toBeVisible();
+
+  const expectedUrl = "https://netology.ru/profile";
+  await page.waitForURL(expectedUrl);
 });
 
 test("Неуспешная авторизация", async ({ page }) => {
@@ -30,5 +31,5 @@ test("Неуспешная авторизация", async ({ page }) => {
   const submitInput = page.locator('[data-testid="login-submit-btn"]');
   await submitInput.click();
 
-  await page.locator('[data-testid="login-error-hint"]');
+  await  expect(page.locator('[data-testid="login-error-hint"]')).toBeVisible;
 });
